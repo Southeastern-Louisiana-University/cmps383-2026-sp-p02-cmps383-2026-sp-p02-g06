@@ -1,0 +1,39 @@
+@Selu383.SP26.Api_HostAddress = http://localhost:5169
+
+GET {{Selu383.SP26.Api_HostAddress}}/api/locations/
+Accept: application/json
+
+###
+
+GET {{Selu383.SP26.Api_HostAddress}}/api/locations/1
+Accept: application/json
+
+###
+
+POST {{Selu383.SP26.Api_HostAddress}}/api/locations/
+Content-Type: application/json
+
+{
+  "name": "New Location",
+  "address": "123 New St",
+  "tableCount": 5
+}
+
+###
+
+PUT {{Selu383.SP26.Api_HostAddress}}/api/locations/1
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": "Updated Location 1",
+  "address": "Updated Address",
+  "tableCount": 12
+}
+
+###
+
+DELETE {{Selu383.SP26.Api_HostAddress}}/api/locations/1
+Accept: application/json
+
+###
