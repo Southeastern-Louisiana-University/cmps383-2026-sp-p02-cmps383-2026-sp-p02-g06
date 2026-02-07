@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.8.34330.188
+# Visual Studio Version 18
+VisualStudioVersion = 18.2.11415.280 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Selu383.SP26.Api", "Selu383.SP26.Api\Selu383.SP26.Api.csproj", "{90E69E1C-C009-4FD7-832D-030AF062ED4B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Selu383.SP26.Tests", "Selu383.SP26.Tests\Selu383.SP26.Tests.csproj", "{2B9C9D0C-00C0-4611-8886-EAF4F726C86B}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "Selu383.SP26.Web", "Selu383.SP26.Web\Selu383.SP26.Web.esproj", "{B7DC31FE-3090-CD4A-56AA-74FC102FEC31}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,12 @@ Global
 		{2B9C9D0C-00C0-4611-8886-EAF4F726C86B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B9C9D0C-00C0-4611-8886-EAF4F726C86B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B9C9D0C-00C0-4611-8886-EAF4F726C86B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7DC31FE-3090-CD4A-56AA-74FC102FEC31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7DC31FE-3090-CD4A-56AA-74FC102FEC31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7DC31FE-3090-CD4A-56AA-74FC102FEC31}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{B7DC31FE-3090-CD4A-56AA-74FC102FEC31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7DC31FE-3090-CD4A-56AA-74FC102FEC31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7DC31FE-3090-CD4A-56AA-74FC102FEC31}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
