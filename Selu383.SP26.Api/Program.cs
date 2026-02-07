@@ -39,9 +39,26 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
+app
+    .UseRouting()
+    .UseAuthentication()
+    .UseAuthorization()
+    .UseEndpoints(x =>
+    {
+        x.MapControllers();
+    });
+app.UseStaticFiles();
 
-app.MapControllers();
+if (app.Environment.IsDevelopment())
+{
+    app.UseSpa(x =>
+    {
+        x.UseProxyToSpaDevelopmentServer("http://localhost:5173");
+    });
+}
+else {
+    app.MapFallbackToFile("/index.html");
+}
 
 app.Run();
 
