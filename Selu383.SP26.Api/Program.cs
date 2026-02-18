@@ -1,12 +1,18 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Selu383.SP26.Api.Data;
 using Selu383.SP26.Api.Features.Locations;
+using Selu383.SP26.Api.Features.User;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DataContext")));
+
+//Identity
+builder.Services.AddIdentity<User, Role>()
+    .AddEntityFrameworkStores<DataContext>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -29,6 +35,50 @@ using (var scope = app.Services.CreateScope())
         db.SaveChanges();
     }
 }
+
+async Task SeedRolesAndUser(IServiceProvider serviceProvider)
+{
+    using var scope = serviceProvider.CreateScope();
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<Role>>();
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+
+    string[] rolename = { "Admin", "User" };
+
+    var adminUser = new User
+    {
+        UserName = "Galkadi",
+        PasswordHash = "Password123!"
+    };
+    var result = await userManager.CreateAsync(adminUser, "Password123!");
+    if (result.Succeeded)
+    {
+        await userManager.AddToRoleAsync(adminUser, "Admin");
+    }
+
+    var user1 = new User
+    {
+        UserName = "Bob",
+        PasswordHash = "Password123!"
+    };
+    var result2 = await userManager.CreateAsync(user1, "Password123!");
+    if (result2.Succeeded)
+    {
+        await userManager.AddToRoleAsync(user1, "User");
+    }
+
+    var user2 = new User
+    {
+        UserName = "Sue",
+        PasswordHash = "Password123!"
+    };
+    var result3 = await userManager.CreateAsync(user2, "Password123!");
+    if (result2.Succeeded)
+    {
+        await userManager.AddToRoleAsync(user2, "User");
+    }
+} 
+
+await SeedRolesAndUser(app.Services);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -56,7 +106,8 @@ if (app.Environment.IsDevelopment())
         x.UseProxyToSpaDevelopmentServer("http://localhost:5173");
     });
 }
-else {
+else
+{
     app.MapFallbackToFile("/index.html");
 }
 
