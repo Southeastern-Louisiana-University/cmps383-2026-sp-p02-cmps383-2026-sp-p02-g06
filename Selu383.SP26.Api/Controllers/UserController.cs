@@ -103,7 +103,7 @@ public class UserController : ControllerBase
 
     // Login
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] LoginModel model)
+   /* public async Task<IActionResult> Login([FromBody] LoginModel model)
     {
         var result = await _signInManager.PasswordSignInAsync(
             model.Email,
@@ -117,7 +117,7 @@ public class UserController : ControllerBase
         }
 
         return Unauthorized(new { message = "Invalid credentials" });
-    }
+    }*/
 
     // Get current user
     [Authorize]
@@ -140,7 +140,7 @@ public class UserController : ControllerBase
     // Update user
     [Authorize]
     [HttpPut("update")]
-    public async Task<IActionResult> UpdateUser([FromBody] UpdateUserModel model)
+    /*public async Task<IActionResult> UpdateUser([FromBody] UpdateUserModel model)
     {
         var user = await _userManager.GetUserAsync(User);
 
@@ -158,7 +158,7 @@ public class UserController : ControllerBase
         }
 
         return BadRequest(result.Errors);
-    }
+    }*/
 
     // Delete user
     [Authorize]
