@@ -11,6 +11,7 @@ public class DataContext : IdentityDbContext<User, Role, int,IdentityUserClaim<i
 {
     public DataContext(DbContextOptions<DataContext> options) : base(options)
     {
+
     }
 
     public DbSet<Location> Locations { get; set; } = null!;
