@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Selu383.SP26.Api.Data;
 
@@ -11,9 +12,11 @@ using Selu383.SP26.Api.Data;
 namespace Selu383.SP26.Api.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20260219003459_migrationyay")]
+    partial class migrationyay
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -122,9 +125,6 @@ namespace Selu383.SP26.Api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ManagerId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(120)
@@ -135,12 +135,10 @@ namespace Selu383.SP26.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ManagerId");
-
                     b.ToTable("Locations");
                 });
 
-            modelBuilder.Entity("Selu383.SP26.Api.Features.Users.Role", b =>
+            modelBuilder.Entity("Selu383.SP26.Api.Features.User.Role", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -170,7 +168,7 @@ namespace Selu383.SP26.Api.Migrations
                     b.ToTable("AspNetRoles", (string)null);
                 });
 
-            modelBuilder.Entity("Selu383.SP26.Api.Features.Users.User", b =>
+            modelBuilder.Entity("Selu383.SP26.Api.Features.User.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -238,7 +236,7 @@ namespace Selu383.SP26.Api.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Selu383.SP26.Api.Features.Users.UserRole", b =>
+            modelBuilder.Entity("Selu383.SP26.Api.Features.User.UserRole", b =>
                 {
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -255,7 +253,7 @@ namespace Selu383.SP26.Api.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
-                    b.HasOne("Selu383.SP26.Api.Features.Users.Role", null)
+                    b.HasOne("Selu383.SP26.Api.Features.User.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -264,7 +262,7 @@ namespace Selu383.SP26.Api.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
-                    b.HasOne("Selu383.SP26.Api.Features.Users.User", null)
+                    b.HasOne("Selu383.SP26.Api.Features.User.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -273,7 +271,7 @@ namespace Selu383.SP26.Api.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
-                    b.HasOne("Selu383.SP26.Api.Features.Users.User", null)
+                    b.HasOne("Selu383.SP26.Api.Features.User.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -282,32 +280,23 @@ namespace Selu383.SP26.Api.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
-                    b.HasOne("Selu383.SP26.Api.Features.Users.User", null)
+                    b.HasOne("Selu383.SP26.Api.Features.User.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Selu383.SP26.Api.Features.Locations.Location", b =>
+            modelBuilder.Entity("Selu383.SP26.Api.Features.User.UserRole", b =>
                 {
-                    b.HasOne("Selu383.SP26.Api.Features.Users.User", "Manager")
-                        .WithMany()
-                        .HasForeignKey("ManagerId");
-
-                    b.Navigation("Manager");
-                });
-
-            modelBuilder.Entity("Selu383.SP26.Api.Features.Users.UserRole", b =>
-                {
-                    b.HasOne("Selu383.SP26.Api.Features.Users.Role", "Role")
-                        .WithMany("Users")
+                    b.HasOne("Selu383.SP26.Api.Features.User.Role", "Role")
+                        .WithMany("UserRoles")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Selu383.SP26.Api.Features.Users.User", "User")
-                        .WithMany("Roles")
+                    b.HasOne("Selu383.SP26.Api.Features.User.User", "User")
+                        .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -317,14 +306,14 @@ namespace Selu383.SP26.Api.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Selu383.SP26.Api.Features.Users.Role", b =>
+            modelBuilder.Entity("Selu383.SP26.Api.Features.User.Role", b =>
                 {
-                    b.Navigation("Users");
+                    b.Navigation("UserRoles");
                 });
 
-            modelBuilder.Entity("Selu383.SP26.Api.Features.Users.User", b =>
+            modelBuilder.Entity("Selu383.SP26.Api.Features.User.User", b =>
                 {
-                    b.Navigation("Roles");
+                    b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
         }

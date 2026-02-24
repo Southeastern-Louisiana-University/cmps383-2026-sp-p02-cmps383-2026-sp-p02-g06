@@ -1,23 +1,69 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Selu383.SP26.Api.Data;
 using Selu383.SP26.Api.Features.Locations;
+using Selu383.SP26.Api.Features.Users;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DataContext")));
 
+// Identity Configuration
+builder.Services.AddIdentity<User, Role>()
+    .AddEntityFrameworkStores<DataContext>();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Events.OnRedirectToLogin = context =>
+    {
+        context.Response.StatusCode = 401; // No redirect for API
+        return Task.CompletedTask;
+    };
+    options.Events.OnRedirectToAccessDenied = context =>
+    {
+        context.Response.StatusCode = 403;
+        return Task.CompletedTask;
+    };
+});
+
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+// Migrate and Seed
 using (var scope = app.Services.CreateScope())
 {
-    var db = scope.ServiceProvider.GetRequiredService<DataContext>();
+    var services = scope.ServiceProvider;
+    var db = services.GetRequiredService<DataContext>();
     db.Database.Migrate();
+
+    var roleManager = services.GetRequiredService<RoleManager<Role>>();
+    var userManager = services.GetRequiredService<UserManager<User>>();
+
+    if (!roleManager.Roles.Any())
+    {
+        await roleManager.CreateAsync(new Role { Name = "Admin" });
+        await roleManager.CreateAsync(new Role { Name = "User" });
+    }
+
+    if (!userManager.Users.Any())
+    {
+        const string pass = "Password123!";
+        var galkadi = new User { UserName = "galkadi" };
+        await userManager.CreateAsync(galkadi, pass);
+        await userManager.AddToRoleAsync(galkadi, "Admin");
+
+        var bob = new User { UserName = "bob" };
+        await userManager.CreateAsync(bob, pass);
+        await userManager.AddToRoleAsync(bob, "User");
+
+        var sue = new User { UserName = "sue" };
+        await userManager.CreateAsync(sue, pass);
+        await userManager.AddToRoleAsync(sue, "User");
+    }
 
     if (!db.Locations.Any())
     {
@@ -30,7 +76,6 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -38,13 +83,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseAuthentication(); // Ensure Authentication comes before Authorization
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
 
-//see: https://docs.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-8.0
-// Hi 383 - this is added so we can test our web project automatically
 public partial class Program { }
